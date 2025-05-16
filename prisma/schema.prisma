@@ -1,0 +1,20 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource eventstore {
+  provider = "postgresql"
+  url      = env("DATABASE_URL_EVENTSTORE")
+}
+
+model event_store {
+  id             String   @id @default(uuid())
+  aggregateType  String
+  aggregateId    String
+  eventType      String
+  payload        Json
+  createdAt      DateTime @default(now())
+  version        Int?
+
+  @@index([aggregateType, aggregateId])
+}
